@@ -1,0 +1,5 @@
+{
+  "buildCommand": "prisma generate && echo 'export * from \"./client\";' > src/generated/prisma/index.ts && next build",
+  "framework": "nextjs",
+  "regions": ["sfo1"]
+}

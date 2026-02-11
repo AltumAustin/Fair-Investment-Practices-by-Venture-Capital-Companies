@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && echo 'export * from \"./client\";' > src/generated/prisma/index.ts && next build",
+    "postinstall": "prisma generate && echo 'export * from \"./client\";' > src/generated/prisma/index.ts",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
