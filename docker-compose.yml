@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vc_compliance
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/vc_compliance?schema=public
+      NEXTAUTH_SECRET: development-secret-change-in-production
+      NEXTAUTH_URL: http://localhost:3000
+      RESEND_API_KEY: re_development_key
+      EMAIL_FROM: compliance@example.com
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

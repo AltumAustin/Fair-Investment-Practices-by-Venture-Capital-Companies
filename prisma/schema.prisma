@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum SurveyStatus {
+  PENDING
+  SENT
+  COMPLETED
+  DECLINED
+}
+
+model VCFirm {
+  id                    String       @id @default(cuid())
+  name                  String
+  headquartersLocation  String?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  investments           Investment[]
+  users                 User[]
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  role          Role      @default(MEMBER)
+  vcFirmId      String?
+  vcFirm        VCFirm?   @relation(fields: [vcFirmId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model PortfolioCompany {
+  id                      String              @id @default(cuid())
+  name                    String
+  principalPlaceOfBusiness String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  investments             Investment[]
+  foundingTeamMembers     FoundingTeamMember[]
+}
+
+model Investment {
+  id                  String            @id @default(cuid())
+  vcFirmId            String
+  vcFirm              VCFirm            @relation(fields: [vcFirmId], references: [id])
+  portfolioCompanyId  String
+  portfolioCompany    PortfolioCompany   @relation(fields: [portfolioCompanyId], references: [id])
+  amount              Decimal           @db.Decimal(20, 2)
+  investmentDate      DateTime
+  calendarYear        Int
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  surveyInvitations   SurveyInvitation[]
+
+  @@index([calendarYear])
+  @@index([vcFirmId])
+}
+
+model FoundingTeamMember {
+  id                  String             @id @default(cuid())
+  name                String
+  email               String
+  title               String?
+  portfolioCompanyId  String
+  portfolioCompany    PortfolioCompany   @relation(fields: [portfolioCompanyId], references: [id], onDelete: Cascade)
+  isPassiveInvestor   Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  surveyInvitations   SurveyInvitation[]
+}
+
+model SurveyInvitation {
+  id                    String         @id @default(cuid())
+  foundingTeamMemberId  String
+  foundingTeamMember    FoundingTeamMember @relation(fields: [foundingTeamMemberId], references: [id], onDelete: Cascade)
+  investmentId          String
+  investment            Investment     @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  calendarYear          Int
+  token                 String         @unique @default(cuid())
+  sentAt                DateTime?
+  completedAt           DateTime?
+  status                SurveyStatus   @default(PENDING)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  surveyResponse        SurveyResponse?
+
+  @@index([token])
+  @@index([calendarYear])
+}
+
+model SurveyResponse {
+  id                    String           @id @default(cuid())
+  surveyInvitationId    String           @unique
+  surveyInvitation      SurveyInvitation @relation(fields: [surveyInvitationId], references: [id], onDelete: Cascade)
+  calendarYear          Int
+
+  // Gender fields
+  genderWoman           Boolean          @default(false)
+  genderMan             Boolean          @default(false)
+  genderNonbinary       Boolean          @default(false)
+  genderTransgender     Boolean          @default(false)
+  genderNoneOfAbove     Boolean          @default(false)
+  genderDecline         Boolean          @default(false)
+
+  // Race/Ethnicity fields
+  raceBlack             Boolean          @default(false)
+  raceAsian             Boolean          @default(false)
+  raceHispanic          Boolean          @default(false)
+  raceNativeAmerican    Boolean          @default(false)
+  raceNativeHawaiian    Boolean          @default(false)
+  raceWhite             Boolean          @default(false)
+  raceNoneOfAbove       Boolean          @default(false)
+  raceDecline           Boolean          @default(false)
+
+  // LGBTQ+ fields
+  lgbtqYes              Boolean          @default(false)
+  lgbtqNo               Boolean          @default(false)
+  lgbtqDecline          Boolean          @default(false)
+
+  // Disability fields
+  disabilityYes         Boolean          @default(false)
+  disabilityNo          Boolean          @default(false)
+  disabilityDecline     Boolean          @default(false)
+
+  // Veteran fields
+  veteranYes            Boolean          @default(false)
+  veteranDisabled       Boolean          @default(false)
+  veteranNo             Boolean          @default(false)
+  veteranDecline        Boolean          @default(false)
+
+  // California Residency fields
+  caResidentYes         Boolean          @default(false)
+  caResidentNo          Boolean          @default(false)
+  caResidentDecline     Boolean          @default(false)
+
+  // Global decline
+  declineAll            Boolean          @default(false)
+
+  submittedAt           DateTime         @default(now())
+  createdAt             DateTime         @default(now())
+
+  @@index([calendarYear])
+}
