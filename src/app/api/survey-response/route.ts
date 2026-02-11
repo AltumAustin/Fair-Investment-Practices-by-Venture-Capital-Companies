@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const { token, ...responseData } = validated;
 
     // Validate the token and check invitation status within a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Find the invitation by token
       const invitation = await tx.surveyInvitation.findUnique({
         where: { token },

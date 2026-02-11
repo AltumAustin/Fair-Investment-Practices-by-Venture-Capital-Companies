@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     for (const investment of investments) {
       // Get non-passive founding team members for this company
       const activeMembers = investment.portfolioCompany.foundingTeamMembers.filter(
-        (member) => !member.isPassiveInvestor
+        (member: any) => !member.isPassiveInvestor
       );
 
       for (const member of activeMembers) {

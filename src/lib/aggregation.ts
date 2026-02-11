@@ -1,5 +1,5 @@
 // Using number type for investment amounts (Prisma Decimal gets converted to number)
-import { SurveyResponseData, isDiverseFounder, isPrimarilyDiverse, hasCategory } from "./survey-helpers";
+import { SurveyResponseData, isPrimarilyDiverse, hasCategory } from "./survey-helpers";
 
 /**
  * Aggregation logic for the DFPI Venture Capital Demographic Data Report
