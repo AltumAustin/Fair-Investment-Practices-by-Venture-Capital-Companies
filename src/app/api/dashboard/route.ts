@@ -38,14 +38,14 @@ export async function GET(request: NextRequest) {
 
     const totalInvestments = investments.length;
     const totalInvestmentAmount = investments.reduce(
-      (sum, inv) => sum + Number(inv.amount),
+      (sum: number, inv: { amount: any }) => sum + Number(inv.amount),
       0
     );
     const surveysSent = surveyInvitations.filter(
-      (s) => s.status !== "PENDING"
+      (s: { status: string }) => s.status !== "PENDING"
     ).length;
     const surveysCompleted = surveyInvitations.filter(
-      (s) => s.status === "COMPLETED"
+      (s: { status: string }) => s.status === "COMPLETED"
     ).length;
     const responseRate =
       surveysSent > 0 ? (surveysCompleted / surveysSent) * 100 : 0;

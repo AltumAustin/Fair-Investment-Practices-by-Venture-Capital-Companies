@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import SurveyForm, { SurveyFormData } from "@/components/survey-form";
 
 interface SurveyInfo {
@@ -13,7 +13,6 @@ interface SurveyInfo {
 
 export default function SurveyPage() {
   const params = useParams();
-  const router = useRouter();
   const token = params.token as string;
 
   const [surveyInfo, setSurveyInfo] = useState<SurveyInfo | null>(null);

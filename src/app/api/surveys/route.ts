@@ -167,3 +167,109 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const vcFirmId = (session.user as any).vcFirmId;
+    const vcFirmName = (session.user as any).vcFirmName;
+    const body = await request.json();
+    const { surveyId, action } = body;
+
+    if (!surveyId || !action) {
+      return NextResponse.json(
+        { error: "surveyId and action are required" },
+        { status: 400 }
+      );
+    }
+
+    if (action !== "send" && action !== "resend") {
+      return NextResponse.json(
+        { error: "action must be 'send' or 'resend'" },
+        { status: 400 }
+      );
+    }
+
+    const invitation = await prisma.surveyInvitation.findUnique({
+      where: { id: surveyId },
+      include: {
+        foundingTeamMember: true,
+        investment: {
+          include: {
+            portfolioCompany: true,
+          },
+        },
+      },
+    });
+
+    if (!invitation) {
+      return NextResponse.json(
+        { error: "Survey invitation not found" },
+        { status: 404 }
+      );
+    }
+
+    if (invitation.investment.vcFirmId !== vcFirmId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    if (action === "send" && invitation.status !== "PENDING") {
+      return NextResponse.json(
+        { error: "Survey has already been sent" },
+        { status: 400 }
+      );
+    }
+
+    if (action === "resend" && invitation.status !== "SENT") {
+      return NextResponse.json(
+        { error: "Survey cannot be resent in its current state" },
+        { status: 400 }
+      );
+    }
+
+    const surveyUrl = `${process.env.NEXTAUTH_URL}/survey/${invitation.token}`;
+    const emailResult = await sendSurveyInvitationEmail({
+      to: invitation.foundingTeamMember.email,
+      founderName: invitation.foundingTeamMember.name,
+      companyName: invitation.investment.portfolioCompany.name,
+      vcFirmName: vcFirmName || "VC Firm",
+      calendarYear: invitation.calendarYear,
+      surveyUrl,
+    });
+
+    if (emailResult.success) {
+      const updatedInvitation = await prisma.surveyInvitation.update({
+        where: { id: surveyId },
+        data: {
+          status: "SENT",
+          sentAt: new Date(),
+        },
+        include: {
+          foundingTeamMember: true,
+          investment: {
+            include: {
+              portfolioCompany: true,
+            },
+          },
+        },
+      });
+
+      return NextResponse.json(updatedInvitation);
+    } else {
+      return NextResponse.json(
+        { error: "Failed to send email" },
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    console.error("Error updating survey invitation:", error);
+    return NextResponse.json(
+      { error: "Failed to update survey invitation" },
+      { status: 500 }
+    );
+  }
+}

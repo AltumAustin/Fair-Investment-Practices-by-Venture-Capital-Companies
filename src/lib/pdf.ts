@@ -1,4 +1,4 @@
-import { ReportData, DEMOGRAPHIC_FIELDS } from "./aggregation";
+import { ReportData } from "./aggregation";
 
 /**
  * Generates the DFPI Venture Capital Demographic Data Report as a structured

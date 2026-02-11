@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 
 interface FoundingTeamMember {
@@ -21,7 +21,6 @@ interface Company {
 
 export default function CompanyDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const companyId = params.id as string;
 
   const [company, setCompany] = useState<Company | null>(null);

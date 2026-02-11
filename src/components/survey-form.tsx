@@ -151,7 +151,6 @@ function CheckboxItem({
 }
 
 export default function SurveyForm({
-  token,
   companyName,
   calendarYear,
   onSubmit,

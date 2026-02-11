@@ -1,11 +1,17 @@
 import { PrismaClient } from "../src/generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-});
+const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/vc_compliance?schema=public";
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("Seeding database...");
+
+  const hashedPassword = await bcrypt.hash("password", 12);
 
   // Create VC Firm
   const vcFirm = await prisma.vCFirm.upsert({
@@ -25,7 +31,7 @@ async function main() {
     create: {
       email: "admin@example.com",
       name: "Admin User",
-      passwordHash: "password",
+      passwordHash: hashedPassword,
       role: "ADMIN",
       vcFirmId: vcFirm.id,
     },
