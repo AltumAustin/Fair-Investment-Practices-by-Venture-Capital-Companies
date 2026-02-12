@@ -1,6 +1,13 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend;
+
+function getResend() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 interface SurveyEmailParams {
   to: string;
@@ -80,7 +87,7 @@ export async function sendSurveyInvitationEmail({
   `;
 
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: process.env.EMAIL_FROM || "compliance@example.com",
       to,
       subject,
