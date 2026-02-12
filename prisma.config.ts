@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Prisma CLI operations (db push, migrate) need a direct (non-pooled) connection.
+    // Vercel Postgres sets POSTGRES_URL_NON_POOLING for this purpose.
+    url: process.env["POSTGRES_URL_NON_POOLING"] || process.env["DATABASE_URL"],
   },
 });

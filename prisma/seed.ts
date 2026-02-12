@@ -3,7 +3,10 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import bcrypt from "bcryptjs";
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/vc_compliance?schema=public";
+const connectionString =
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.DATABASE_URL ||
+  "postgresql://postgres:postgres@localhost:5432/vc_compliance?schema=public";
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
