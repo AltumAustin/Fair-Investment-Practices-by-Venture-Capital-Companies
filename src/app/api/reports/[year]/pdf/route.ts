@@ -30,6 +30,23 @@ export async function GET(
       );
     }
 
+    // Verify payment for this report year
+    const payment = await prisma.payment.findUnique({
+      where: {
+        vcFirmId_reportYear: {
+          vcFirmId,
+          reportYear: calendarYear,
+        },
+      },
+    });
+
+    if (payment?.status !== "SUCCEEDED") {
+      return NextResponse.json(
+        { error: "Payment required", code: "PAYMENT_REQUIRED" },
+        { status: 402 }
+      );
+    }
+
     const investments = await prisma.investment.findMany({
       where: { vcFirmId, calendarYear },
       include: {
