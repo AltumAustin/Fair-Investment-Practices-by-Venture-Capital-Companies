@@ -14,6 +14,8 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const vcFirmId = (session.user as any).vcFirmId;
+
     const company = await prisma.portfolioCompany.findUnique({
       where: { id: params.id },
       include: {
@@ -22,7 +24,7 @@ export async function GET(
       },
     });
 
-    if (!company) {
+    if (!company || company.vcFirmId !== vcFirmId) {
       return NextResponse.json(
         { error: "Portfolio company not found" },
         { status: 404 }
@@ -49,11 +51,12 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const vcFirmId = (session.user as any).vcFirmId;
     const body = await request.json();
     const validated = portfolioCompanySchema.parse(body);
 
     const company = await prisma.portfolioCompany.update({
-      where: { id: params.id },
+      where: { id: params.id, vcFirmId },
       data: {
         name: validated.name,
         principalPlaceOfBusiness: validated.principalPlaceOfBusiness,
@@ -95,8 +98,10 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const vcFirmId = (session.user as any).vcFirmId;
+
     await prisma.portfolioCompany.delete({
-      where: { id: params.id },
+      where: { id: params.id, vcFirmId },
     });
 
     return NextResponse.json({ message: "Portfolio company deleted" });

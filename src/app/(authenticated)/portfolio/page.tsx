@@ -17,6 +17,7 @@ export default function PortfolioPage() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", principalPlaceOfBusiness: "" });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const fetchCompanies = async () => {
     try {
@@ -38,6 +39,7 @@ export default function PortfolioPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError("");
     try {
       const res = await fetch("/api/portfolio", {
         method: "POST",
@@ -48,9 +50,13 @@ export default function PortfolioPage() {
         setFormData({ name: "", principalPlaceOfBusiness: "" });
         setShowForm(false);
         fetchCompanies();
+      } else {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Failed to save company. Please try again.");
       }
     } catch (err) {
       console.error("Failed to create company:", err);
+      setError("Network error. Please check your connection and try again.");
     }
     setSaving(false);
   };
@@ -85,6 +91,11 @@ export default function PortfolioPage() {
       {showForm && (
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">Add Portfolio Company</h2>
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-sm text-red-700">
+              {error}
+            </div>
+          )}
           <form onSubmit={handleCreate} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">

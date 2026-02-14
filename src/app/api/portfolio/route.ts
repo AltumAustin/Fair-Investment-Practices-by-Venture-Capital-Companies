@@ -15,11 +15,7 @@ export async function GET() {
 
     const companies = await prisma.portfolioCompany.findMany({
       where: {
-        investments: {
-          some: {
-            vcFirmId,
-          },
-        },
+        vcFirmId,
       },
       include: {
         foundingTeamMembers: true,
@@ -46,6 +42,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    const vcFirmId = (session.user as any).vcFirmId;
     const body = await request.json();
     const validated = portfolioCompanySchema.parse(body);
 
@@ -53,6 +50,7 @@ export async function POST(request: NextRequest) {
       data: {
         name: validated.name,
         principalPlaceOfBusiness: validated.principalPlaceOfBusiness,
+        vcFirmId,
       },
       include: {
         foundingTeamMembers: true,

@@ -20,12 +20,13 @@ enum SurveyStatus {
 }
 
 model VCFirm {
-  id                    String       @id @default(cuid())
+  id                    String              @id @default(cuid())
   name                  String
   headquartersLocation  String?
-  createdAt             DateTime     @default(now())
-  updatedAt             DateTime     @updatedAt
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
   investments           Investment[]
+  portfolioCompanies    PortfolioCompany[]
   users                 User[]
 }
 
@@ -45,10 +46,14 @@ model PortfolioCompany {
   id                      String              @id @default(cuid())
   name                    String
   principalPlaceOfBusiness String?
+  vcFirmId                String
+  vcFirm                  VCFirm              @relation(fields: [vcFirmId], references: [id])
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @updatedAt
   investments             Investment[]
   foundingTeamMembers     FoundingTeamMember[]
+
+  @@index([vcFirmId])
 }
 
 model Investment {
