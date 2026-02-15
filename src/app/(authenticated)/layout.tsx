@@ -23,16 +23,24 @@ function NavIcon({ d }: { d: string }) {
   );
 }
 
+function BrandIcon({ className = "w-7 h-7" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 64 64" fill="none">
+      <circle cx="19" cy="19" r="11" fill="#FFFFFF"/>
+      <circle cx="45" cy="19" r="11" fill="#FFFFFF"/>
+      <circle cx="19" cy="45" r="11" fill="#FFFFFF"/>
+      <circle cx="45" cy="45" r="11" fill="#22B8CF"/>
+      <path d="M39.5 45.5L43 49L51 41" stroke="#FFFFFF" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 function SidebarContent({ pathname, session, onNavClick }: { pathname: string; session: any; onNavClick?: () => void }) {
   return (
     <>
       <div className="p-6 border-b border-blue-800">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-blue-800 rounded-md flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-          </div>
+          <BrandIcon className="w-7 h-7 flex-shrink-0" />
           <div>
             <h1 className="text-base font-bold leading-tight">VC Comply</h1>
             <p className="text-blue-300 text-xs leading-tight">
@@ -91,11 +99,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile top bar */}
       <div className="lg:hidden bg-blue-900 text-white flex items-center justify-between px-4 h-14 fixed top-0 left-0 right-0 z-30">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-blue-800 rounded-md flex items-center justify-center">
-            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-          </div>
+          <BrandIcon className="w-7 h-7" />
           <span className="text-sm font-bold">VC Comply</span>
         </div>
         <button
