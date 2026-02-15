@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate all brand assets for Pariti from SVG sources."""
+"""Generate all brand assets for VC Comply from SVG sources."""
 
 import os
 import struct
@@ -122,8 +122,8 @@ def generate_webmanifest():
     print("  Creating site.webmanifest...")
 
     manifest = """{
-  "name": "Pariti",
-  "short_name": "Pariti",
+  "name": "VC Comply",
+  "short_name": "VC Comply",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
@@ -215,7 +215,7 @@ def generate_logo_horizontal(variant="color"):
 
     # Try to generate wordmark paths
     font_path = get_font_path()
-    path_result = create_wordmark_svg("Pariti", font_path, font_size, text_fill)
+    path_result = create_wordmark_svg("VC Comply", font_path, font_size, text_fill)
 
     icon_svg = f'''<g transform="translate({padding}, {padding})">
     <svg width="{icon_size}" height="{icon_size}" viewBox="0 0 64 64" fill="none">
@@ -276,7 +276,7 @@ def generate_logo_stacked(variant="color"):
 
     # Try font path extraction for stacked version
     font_path = get_font_path()
-    path_result = create_wordmark_svg("Pariti", font_path, font_size, text_fill)
+    path_result = create_wordmark_svg("VC Comply", font_path, font_size, text_fill)
 
     text_y = padding + icon_size + gap
 
@@ -337,7 +337,7 @@ def generate_og_image():
         font_tagline = ImageFont.truetype(font_path, 22)
 
     # Draw product name
-    title = "Pariti"
+    title = "VC Comply"
     title_bbox = draw.textbbox((0, 0), title, font=font_title)
     title_w = title_bbox[2] - title_bbox[0]
     title_x = (width - title_w) // 2
@@ -361,7 +361,7 @@ def generate_og_image():
 
 def main():
     print("=" * 50)
-    print("Pariti Brand Asset Generator")
+    print("VC Comply Brand Asset Generator")
     print("=" * 50)
 
     # Ensure directories exist
