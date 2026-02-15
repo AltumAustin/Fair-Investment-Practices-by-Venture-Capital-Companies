@@ -43,26 +43,31 @@ async function main() {
       id: "seed-company-1",
       name: "GreenTech Solutions",
       principalPlaceOfBusiness: "San Francisco, CA",
+      vcFirmId: vcFirm.id,
     },
     {
       id: "seed-company-2",
       name: "MediCore Health",
       principalPlaceOfBusiness: "Los Angeles, CA",
+      vcFirmId: vcFirm.id,
     },
     {
       id: "seed-company-3",
       name: "DataStream Analytics",
       principalPlaceOfBusiness: "San Jose, CA",
+      vcFirmId: vcFirm.id,
     },
     {
       id: "seed-company-4",
       name: "UrbanMobility Inc",
       principalPlaceOfBusiness: "Oakland, CA",
+      vcFirmId: vcFirm.id,
     },
     {
       id: "seed-company-5",
       name: "CloudSecure AI",
       principalPlaceOfBusiness: "Palo Alto, CA",
+      vcFirmId: vcFirm.id,
     },
   ];
 
