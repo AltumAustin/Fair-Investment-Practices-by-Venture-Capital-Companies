@@ -1,10 +1,8 @@
-# Pariti Brand Guidelines
+# VC Comply Brand Guidelines
 
-**Pariti** — Venture Capital Demographic Compliance, Simplified
+**VC Comply** — Venture Capital Demographic Compliance, Simplified
 
-Pariti helps venture capital firms comply with California's Fair Investment Practices by Venture Capital Companies Law (Corp. Code, § 27500 et seq.). It distributes demographic data surveys to startup founders, collects responses, and generates annual reports for the DFPI.
-
-The name derives from _parity_ — fairness and equality — the core principle of the law.
+VC Comply helps venture capital firms comply with California's Fair Investment Practices by Venture Capital Companies Law (Corp. Code, § 27500 et seq.). It distributes demographic data surveys to startup founders, collects responses, and generates annual reports for the DFPI.
 
 ---
 
@@ -32,7 +30,7 @@ The name derives from _parity_ — fairness and equality — the core principle 
 
 ## Icon
 
-The Pariti icon is a 2x2 grid of circles: three in navy and one in teal with a white checkmark. It represents demographic data points (founders) converging into a single compliance verification.
+The VC Comply icon is a 2x2 grid of circles: three in navy and one in teal with a white checkmark. It represents demographic data points (founders) converging into a single compliance verification.
 
 ### Design Principles
 
@@ -53,8 +51,8 @@ The Pariti icon is a 2x2 grid of circles: three in navy and one in teal with a w
 
 Two lockups are provided, each in light-background and dark-background variants:
 
-- **Horizontal:** Icon + "Pariti" side by side. Use in headers, navigation bars, and horizontal layouts.
-- **Stacked:** Icon above "Pariti." Use in splash screens, centered layouts, and square contexts.
+- **Horizontal:** Icon + "VC Comply" side by side. Use in headers, navigation bars, and horizontal layouts.
+- **Stacked:** Icon above "VC Comply." Use in splash screens, centered layouts, and square contexts.
 
 The wordmark uses [Inter](https://rsms.me/inter/) (SemiBold, 600 weight), embedded as SVG paths for zero font dependencies.
 
@@ -155,6 +153,6 @@ Open Graph / social meta tags:
 <meta property="og:image" content="https://yourdomain.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:title" content="Pariti" />
+<meta property="og:title" content="VC Comply" />
 <meta property="og:description" content="Venture Capital Demographic Compliance, Simplified" />
 ```
